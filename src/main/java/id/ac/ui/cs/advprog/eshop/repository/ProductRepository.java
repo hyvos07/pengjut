@@ -11,12 +11,32 @@ import java.util.List;
 public class ProductRepository {
     private List<Product> productData = new ArrayList<>();
 
-    public Product create(Product product){
+    public Product get(String productId) {
+        for (Product product : productData) {
+            if (product.getProductId().equals(productId)) {
+                return product;
+            }
+        }
+
+        return null;
+    }
+
+    public Product create(Product product) {
         productData.add(product);
         return product;
     }
 
-    public Iterator<Product> findAll(){
+    public boolean update(Product product) {
+        Product oldProduct = this.get(product.getProductId());
+        if (oldProduct != null) {
+            oldProduct.setProductName(product.getProductName());
+            oldProduct.setProductQuantity(product.getProductQuantity());
+            return true;
+        }
+        return false;
+    }
+
+    public Iterator<Product> findAll() {
         return productData.iterator();
     }
 }
