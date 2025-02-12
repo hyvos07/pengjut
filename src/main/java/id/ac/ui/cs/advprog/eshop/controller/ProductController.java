@@ -81,6 +81,20 @@ public class ProductController {
         return "redirect:/product/list";
     }
 
+    @DeleteMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable String id, RedirectAttributes ra) {
+        try {
+            if (!service.delete(id)) {
+                ra.addFlashAttribute("error", "Alert: Product with id " + id + " cannot be deleted!");
+            } else {
+                ra.addFlashAttribute("success", "Alert: Product deleted!");
+            }
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "Alert: Product with id " + id + " cannot be deleted!");
+        }
+        return "redirect:/product/list";
+    }
+
     @GetMapping("/error")
     public String errorPage(Model model) {
         return "error";
