@@ -94,9 +94,4 @@ public class ProductController {
         }
         return "redirect:/product/list";
     }
-
-    @GetMapping("/error")
-    public String errorPage(Model model) {
-        return "error";
-    }
 }
