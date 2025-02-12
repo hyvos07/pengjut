@@ -36,6 +36,82 @@ public class ProductRepositoryTest {
         assertEquals(product.getProductQuantity(), savedProduct.getProductQuantity());
     }
 
+    /**
+     * Test the find product functionality when there is nothing in the repository XD
+     */
+    @Test
+    void testFindNonExistentProduct() {
+        Product product = productRepository.get("apaajalahgangaruhjuga");
+        assertNull(product);
+    }
+
+    /**
+     * Test the edit product functionality :D
+     */
+    @Test
+    void testEditProduct() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Skibidi Cap Sigma");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+        
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        updatedProduct.setProductName("Updated Product");
+        updatedProduct.setProductQuantity(200);
+        
+        boolean updateResult = productRepository.update(updatedProduct);
+        assertTrue(updateResult);
+        
+        Product savedProduct = productRepository.get(product.getProductId());
+        assertEquals(updatedProduct.getProductName(), savedProduct.getProductName());
+        assertEquals(updatedProduct.getProductQuantity(), savedProduct.getProductQuantity());
+    }
+    
+    /**
+     * Test the edit product functionality with non-existent product
+     * (the product is not in the repository, so it should return false because there is nothing to update :/)
+     */
+    @Test 
+    void testEditNonExistentProduct() {
+        Product product = new Product();
+        product.setProductId("apaajalahgangaruhjuga");
+        product.setProductName("Test Product");
+        product.setProductQuantity(100);
+        
+        boolean updateResult = productRepository.update(product);
+        assertFalse(updateResult);
+    }
+
+    /**
+     * Test the delete product functionality :D
+     */
+    @Test
+    void testDeleteProduct() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Skibidi Cap Sigma");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        boolean deleteResult = productRepository.delete(product.getProductId());
+        assertTrue(deleteResult);
+
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertFalse(productIterator.hasNext());
+    }
+
+    /**
+     * Test the delete product functionality with non-existent product
+     * (the product is not in the repository, so it should return false because there is nothing to delete :/)
+     */
+    @Test
+    void testDeleteNonExistentProduct() {
+        boolean deleteResult = productRepository.delete("apaajalahgangaruhjuga");
+        assertFalse(deleteResult);
+    }
+
     @Test
     void testFindAllIfEmpty() {
         Iterator<Product> productIterator = productRepository.findAll();
