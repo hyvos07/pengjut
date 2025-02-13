@@ -6,8 +6,6 @@
 **NPM**: 2306220753 <br>
 **Kelas**: A
 
-<br>
-
 ## Modul 1
 
 ### Reflection 1
@@ -15,7 +13,6 @@
 > You already implemented two new features using Spring Boot. Check again your source code and evaluate the coding standards that you have learned in this module. Write **clean code principles** and **secure coding practices** that have been applied to your code.  If you find any mistake in your source code, please explain how to improve your code.
 
 #### Clean Code Principles
----
 
 Pada *project* Spring Boot ini, saya sudah mengimplementasikan prinsip-prinsip *clean code* dengan sebaiknya, sehingga kode yang dibuat tidak hanya sekedar berhasil saat dijalankan saja, tetapi juga terjaga keamanan dan *readability*-nya.
 
@@ -80,7 +77,6 @@ Walaupun begitu, *project* ini masih belum mengimplementasikan abstraksi pada *c
 
 
 #### Secure Coding
----
 
 Di dalam *project* ini juga terdapat beberapa implementasi *secure coding* yang memastikan keamanan dari aplikasi web yang ada dan menjaga pengalaman dari pengguna pada aplikasi web ini. Beberapa implementasi yang saya lakukan seperti validasi input dari sisi *client* dan sisi *server* juga sudah saya lakukan di beberapa tempat, kecuali validasi `productQuantity` di bagian pembuatan produk yang harus merupakan bilangan bulat positif.
 
@@ -97,6 +93,8 @@ Setelah menggunakan *unit test* di dalam *project* ini, saya merasa kode yang su
 Banyaknya *unit test* yang sebenarnya harus ditambahkan pada *project* ini tergantung dari berapa *use cases* yang bisa dilakukan di dalam aplikasi web itu sendiri. Menurut saya, setiap *class* setidaknya harus memiliki *unit test* yang bisa meng-*cover* semua method di dalamnya, serta aksi-aksi penting seperti *create*, *update*, dan *delete*. Jika terlalu banyak, rentan terjadinya pengulangan *unit test* yang sama tanpa disadari oleh sang *developer*.
 
 Untuk memastikan *unit test* cukup untuk menguji kode yang sudah dibuat, biasanya para *developer* memakai metrik seperti *code coverage*. *Code coverage* dihitung lewat seberapa banyak baris dari *unit testing* yang dapat dilewati berdasarkan besaran persentase. Jika *code coverage* yang dihasilkan menunjukkan angka 100%, berarti semua baris pada *unit test* yang dibuat untuk kode tersebut dapat berjalan dengan lancar. Namun, karena *code coverage* dihitung berdasarkan *unit test* yang (juga) kita buat, maka tidak berarti 100% itu menunjukkan kode kita sudah bebas dari *bug* dan sebagainya. Oleh karena itu, kita juga perlu menggunakan *tools* lain untuk membantu kita lebih yakin.
+
+<br>
 
 > Suppose that after writing the `CreateProductFunctionalTest.java` along with the corresponding test case, you were asked to create another functional test suite that verifies the number of items in the product list. You decided to create a new Java class similar to the prior functional test suites with the same setup procedures and instance variables. What do you think about the cleanliness of the code of the new functional test suite? Will the new code reduce the code quality?
 
