@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 
 public interface ProductService {
     public Product get(String productId) throws NoSuchElementException;
-    public Product create(Product product);
+    public Product create(Product product) throws IllegalArgumentException;
     public boolean update(Product product) throws NoSuchElementException;
     public boolean delete(String productId);
     public List<Product> findAll();

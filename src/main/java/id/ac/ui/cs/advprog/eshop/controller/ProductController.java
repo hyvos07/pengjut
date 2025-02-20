@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/product")
@@ -33,7 +32,6 @@ public class ProductController {
 
     @PostMapping("/create")
     public String createProductPost(@ModelAttribute Product product, Model model, RedirectAttributes ra) {
-        product.setProductId(UUID.randomUUID().toString());
         service.create(product);
         ra.addFlashAttribute("success", "Alert: Product created!");
         return "redirect:list";

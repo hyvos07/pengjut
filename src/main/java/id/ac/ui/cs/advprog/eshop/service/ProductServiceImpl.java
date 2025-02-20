@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -21,7 +22,16 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product create(Product product) {
+    public Product create(Product product) throws IllegalArgumentException {
+        if (product.getProductName() == null) {
+            throw new IllegalArgumentException("Product name cannot be null");
+        } else if (product.getProductName().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be empty");
+        } else if (product.getProductQuantity() < 0) {
+            throw new IllegalArgumentException("Product quantity cannot be negative");
+        }
+
+        product.setProductId(UUID.randomUUID().toString());
         productRepository.create(product);
         return product;
     }
