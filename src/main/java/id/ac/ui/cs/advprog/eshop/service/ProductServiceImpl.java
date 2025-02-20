@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -15,18 +17,27 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Override
-    public Product get(String productId) {
+    public Product get(String productId) throws NoSuchElementException {
         return productRepository.get(productId);
     }
 
     @Override
-    public Product create(Product product) {
+    public Product create(Product product) throws IllegalArgumentException {
+        if (product.getProductName() == null) {
+            throw new IllegalArgumentException("Product name cannot be null");
+        } else if (product.getProductName().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be empty");
+        } else if (product.getProductQuantity() < 0) {
+            throw new IllegalArgumentException("Product quantity cannot be negative");
+        }
+
+        product.setProductId(UUID.randomUUID().toString());
         productRepository.create(product);
         return product;
     }
 
     @Override
-    public boolean update(Product product) {
+    public boolean update(Product product) throws NoSuchElementException{
         return productRepository.update(product);
     }
 
