@@ -16,6 +16,9 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
+    private String successRA = "success";
+    private String errorRA = "error";
+
     @GetMapping("/list")
     public String productListPage(Model model) {
         List<Product> allProducts = service.findAll();
@@ -33,7 +36,7 @@ public class ProductController {
     @PostMapping("/create")
     public String createProductPost(@ModelAttribute Product product, Model model, RedirectAttributes ra) {
         service.create(product);
-        ra.addFlashAttribute("success", "Alert: Product created!");
+        ra.addFlashAttribute(successRA, "Alert: Product created!");
         return "redirect:list";
     }
 
@@ -43,7 +46,7 @@ public class ProductController {
             Product product = service.get(id);
             model.addAttribute("product", product);
         } catch (Exception e) {
-            ra.addFlashAttribute("error", "Alert: Product with id " + id + "cannot be found.");
+            ra.addFlashAttribute(errorRA, "Alert: Product with id " + id + "cannot be found.");
             return "redirect:/product/list";
         }
         return "EditProduct";
@@ -54,22 +57,22 @@ public class ProductController {
         product.setProductId(id);
         try {
             if (product.getProductQuantity() < 0) {
-                ra.addFlashAttribute("error", "Alert: Product quantity must be greater than 0!");
+                ra.addFlashAttribute(errorRA, "Alert: Product quantity must be greater than 0!");
                 return "redirect:/product/edit/" + id;
             }
 
             if (product.getProductName().isEmpty()) {
-                ra.addFlashAttribute("error", "Alert: Product name cannot be empty!");
+                ra.addFlashAttribute(errorRA, "Alert: Product name cannot be empty!");
                 return "redirect:/product/edit/" + id;
             }
 
             if (!service.update(product)) {
-                ra.addFlashAttribute("error", "Alert: Product cannot be updated!");
+                ra.addFlashAttribute(errorRA, "Alert: Product cannot be updated!");
             } else {
-                ra.addFlashAttribute("success", "Alert: Product updated!");
+                ra.addFlashAttribute(successRA, "Alert: Product updated!");
             }
         } catch (Exception e) {
-            ra.addFlashAttribute("error", "Alert: Product cannot be updated!");
+            ra.addFlashAttribute(errorRA, "Alert: Product cannot be updated!");
         }
 
         return "redirect:/product/list";
@@ -79,12 +82,12 @@ public class ProductController {
     public String deleteProduct(@PathVariable String id, RedirectAttributes ra) {
         try {
             if (!service.delete(id)) {
-                ra.addFlashAttribute("error", "Alert: Product with id " + id + " cannot be deleted!");
+                ra.addFlashAttribute(errorRA, "Alert: Product with id " + id + " cannot be deleted!");
             } else {
-                ra.addFlashAttribute("success", "Alert: Product deleted!");
+                ra.addFlashAttribute(successRA, "Alert: Product deleted!");
             }
         } catch (Exception e) {
-            ra.addFlashAttribute("error", "Alert: Product with id " + id + " cannot be deleted!");
+            ra.addFlashAttribute(errorRA, "Alert: Product with id " + id + " cannot be deleted!");
         }
         return "redirect:/product/list";
     }
