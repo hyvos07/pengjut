@@ -48,5 +48,5 @@ jobs:
             -Dsonar.organization=hyvos07 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            clean build sonarqube
+            clean build sonar
       
