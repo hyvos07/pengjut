@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +18,8 @@ public class ProductRepositoryTest {
     ProductRepository productRepository;
 
     @BeforeEach
-    void setUp() {}
+    void setUp() {
+    }
 
     @Test
     void testCreateAndFind() {
@@ -37,12 +38,35 @@ public class ProductRepositoryTest {
     }
 
     /**
+     * Test to find product functionality when there is more than 1 product
+     */
+    @Test
+    void testFindingProductInPopulatedList() {
+        Product productA = new Product();
+        productA.setProductId("wrong_id");
+        productA.setProductName("Skibidi Cap Beta");
+
+        Product productB = new Product();
+        productB.setProductId("correct_id");
+        productB.setProductName("Skibidi Cap Sigma");
+
+        productRepository.create(productA); // Non-matching product
+        productRepository.create(productB); // Matching product
+
+        Product product = productRepository.get("correct_id");
+
+        assertNotNull(product);
+        assertEquals("correct_id", product.getProductId());
+    }
+
+    /**
      * Test the find product functionality when there is nothing in the repository XD
      */
     @Test
     void testFindNonExistentProduct() {
-        Product product = productRepository.get("apaajalahgangaruhjuga");
-        assertNull(product);
+        assertThrows(NoSuchElementException.class, () -> {
+            productRepository.get("apaajalahgangaruhjuga");
+        });
     }
 
     /**
@@ -55,33 +79,35 @@ public class ProductRepositoryTest {
         product.setProductName("Skibidi Cap Sigma");
         product.setProductQuantity(100);
         productRepository.create(product);
-        
+
         Product updatedProduct = new Product();
         updatedProduct.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         updatedProduct.setProductName("Updated Product");
         updatedProduct.setProductQuantity(200);
-        
+
         boolean updateResult = productRepository.update(updatedProduct);
         assertTrue(updateResult);
-        
+
         Product savedProduct = productRepository.get(product.getProductId());
         assertEquals(updatedProduct.getProductName(), savedProduct.getProductName());
         assertEquals(updatedProduct.getProductQuantity(), savedProduct.getProductQuantity());
     }
-    
+
     /**
      * Test the edit product functionality with non-existent product
      * (the product is not in the repository, so it should return false because there is nothing to update :/)
      */
-    @Test 
+    @Test
     void testEditNonExistentProduct() {
         Product product = new Product();
         product.setProductId("apaajalahgangaruhjuga");
         product.setProductName("Test Product");
         product.setProductQuantity(100);
-        
-        boolean updateResult = productRepository.update(product);
-        assertFalse(updateResult);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            boolean updateResult = productRepository.update(product);
+            assertFalse(updateResult);
+        });
     }
 
     /**
@@ -117,12 +143,13 @@ public class ProductRepositoryTest {
         Iterator<Product> productIterator = productRepository.findAll();
         assertFalse(productIterator.hasNext());
     }
-    
+
     @Test
     void testFindAllIfMoreThanOneProduct() {
         Product product1 = new Product();
         product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product1.setProductName("Skibidi Cap Sigma");;
+        product1.setProductName("Skibidi Cap Sigma");
+        ;
         product1.setProductQuantity(100);
         productRepository.create(product1);
 
