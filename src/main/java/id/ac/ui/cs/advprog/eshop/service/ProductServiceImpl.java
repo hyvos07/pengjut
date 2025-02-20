@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -15,7 +16,7 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Override
-    public Product get(String productId) throws Exception {
+    public Product get(String productId) throws NoSuchElementException {
         return productRepository.get(productId);
     }
 
@@ -26,7 +27,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public boolean update(Product product) throws Exception{
+    public boolean update(Product product) throws NoSuchElementException{
         return productRepository.update(product);
     }
 
