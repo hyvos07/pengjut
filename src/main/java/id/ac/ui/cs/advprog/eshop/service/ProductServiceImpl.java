@@ -15,7 +15,7 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Override
-    public Product get(String productId) {
+    public Product get(String productId) throws Exception {
         return productRepository.get(productId);
     }
 
@@ -26,7 +26,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public boolean update(Product product) {
+    public boolean update(Product product) throws Exception{
         return productRepository.update(product);
     }
 

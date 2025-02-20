@@ -11,14 +11,16 @@ import java.util.List;
 public class ProductRepository {
     private List<Product> productData = new ArrayList<>();
 
-    public Product get(String productId) {
-        for (Product product : productData) {
-            if (product.getProductId().equals(productId)) {
-                return product;
+    public Product get(String productId) throws Exception {
+        Product product;
+
+        for (Product p : productData) {
+            if (p.getProductId().equals(productId)) {
+                product = p;
             }
         }
 
-        return null;
+        throw new Exception("Product not found");
     }
 
     public Product create(Product product) {
@@ -26,14 +28,11 @@ public class ProductRepository {
         return product;
     }
 
-    public boolean update(Product product) {
+    public boolean update(Product product) throws Exception {
         Product oldProduct = this.get(product.getProductId());
-        if (oldProduct != null) {
-            oldProduct.setProductName(product.getProductName());
-            oldProduct.setProductQuantity(product.getProductQuantity());
-            return true;
-        }
-        return false;
+        oldProduct.setProductName(product.getProductName());
+        oldProduct.setProductQuantity(product.getProductQuantity());
+        return product.getProductName().equals(oldProduct.getProductName()) && product.getProductQuantity() == oldProduct.getProductQuantity();
     }
 
     public boolean delete(String productId) {

@@ -21,14 +21,14 @@ public class ProductController {
     public String productListPage(Model model) {
         List<Product> allProducts = service.findAll();
         model.addAttribute("products", allProducts);
-        return "productList";
+        return "ProductList";
     }
 
     @GetMapping("/create")
     public String createProductPage(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
-        return "createProduct";
+        return "CreateProduct";
     }
 
     @PostMapping("/create")
@@ -43,16 +43,12 @@ public class ProductController {
     public String editProductPage(@PathVariable String id, Model model, RedirectAttributes ra) {
         try {
             Product product = service.get(id);
-            if (product == null) {
-                ra.addFlashAttribute("error", "Alert: Product with id " + id + "cannot be found.");
-                return "redirect:/product/list";
-            }
             model.addAttribute("product", product);
         } catch (Exception e) {
             ra.addFlashAttribute("error", "Alert: Product with id " + id + "cannot be found.");
             return "redirect:/product/list";
         }
-        return "editProduct";
+        return "EditProduct";
     }
 
     @PutMapping("/edit/{id}")
