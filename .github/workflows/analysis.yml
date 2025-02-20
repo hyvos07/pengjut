@@ -42,9 +42,8 @@ jobs:
       - name: Set gradlew as executable
         run: chmod +x ./gradlew
 
-      - name: Build and analyze
+      - name: Build and analyze with SonarCloud
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
-      
+        run: ./gradlew clean build sonar --info
