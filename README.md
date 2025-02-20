@@ -6,6 +6,8 @@
 **NPM**: 2306220753 <br>
 **Kelas**: A
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hyvos07_pengjut&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hyvos07_pengjut)
+
 ## Modul 1
 
 ### Reflection 1
