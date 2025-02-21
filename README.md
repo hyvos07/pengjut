@@ -66,6 +66,7 @@ Pada versi yang terbaru (di pengerjaan Modul 2 ini), saya merasa bahwa *project*
 Selain CI, terdapat pula CD ke PaaS (*Platform as a Service*) yang akan otomatis melakukan *deployment* dari *branch* `main` ke [Koyeb](https://pengjut.koyeb.app/) setelah *test* yang dijalankan di *pull request* berhasil.. Walaupun saya tidak memakai Github Workflow untuk mengotomisasi *deployment* ini, Koyeb sudah terotomisasi sehingga akan melakukan *build* dan *deployment* sendiri secara otomatis jika terdapat perubahan baru yang di-*push* di Github. Menurut saya, sistem ini sudah mengikuti konsep dari *Continuous Deployment* (CD).
 
 Maka dari itu, menurut saya *project* ini sudah menganut konsep dari CI/CD yang sudah saya atur.
+
 <br>
 
 ## Modul 1
