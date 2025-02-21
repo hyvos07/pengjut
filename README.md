@@ -8,6 +8,66 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hyvos07_pengjut&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hyvos07_pengjut)
 
+## Modul 2
+
+### Reflection
+
+> List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
+
+Setelah melakukan analisis kode pada Sonarcloud, saya menemukan beberapa *issues* terkait *clean code*. Salah satu yang saya berhasil perbaiki adalah bagian kode yang mengulang-ngulang, sehingga melanggar prinsip DRY (*Don't Repeat Yourself*). Misalkan pada bagian kode yang ada di [`ProductController.java`](https://github.com/hyvos07/pengjut/blob/decfd5ee9e0753f56ca54314957c90d51dbb53ed/src/main/java/id/ac/ui/cs/advprog/eshop/controller/ProductController.java) berikut.
+
+```java
+// ProductController.java
+@PutMapping("/edit/{id}")
+public String updateProductPut(@ModelAttribute Product product, @PathVariable String id, RedirectAttributes ra) {
+    product.setProductId(id);
+    try {
+        if (product.getProductQuantity() < 0) {
+            ra.addFlashAttribute("error", "Alert: Product quantity must be greater than 0!");
+            return "redirect:/product/edit/" + id;
+        }
+
+        if (product.getProductName().isEmpty()) {
+            ra.addFlashAttribute("error", "Alert: Product name cannot be empty!");
+            return "redirect:/product/edit/" + id;
+        }
+
+        if (!service.update(product)) {
+            ra.addFlashAttribute("error", "Alert: Product cannot be updated!");
+        } else {
+            ra.addFlashAttribute("success", "Alert: Product updated!");
+        }
+    } catch (Exception e) {
+        ra.addFlashAttribute("error", "Alert: Product cannot be updated!");
+    }
+
+    return "redirect:/product/list";
+}
+```
+Pada bagian kode di atas, dapat dilihat bahwa *string* `"error"` digunakan berkali-kali di satu *method* yang sama. Bahkan, jika dilihat dalam satu file yang utuh, string `"error"` dan `"success"` dipakai berkali-kali di *controller* ini. Hal ini melanggar prinsip DRY karena membuat ***Maintainability*** dari kode kita berkurang.
+
+Jika suatu saat kita mau mengubah string `"error"` menjadi `"errorMessage"`, kita perlu mengubah satu-satu kemunculan string tersebut di dalam satu file tersebut (Walaupun beberapa IDE memungkinkan kita mengganti value yang sama dalam satu waktu, tentu saja tetap merepotkan jika ada nama yang sama namun bukan bagian dari kode yang akan kita ganti). Jika salah satu komponen yang diubah tidak tersimpan, dapat terjadi kemungkinan error yang tidak diinginkan.
+
+Solusi untuk masalah ini adalah dengan membuat *constant value* untuk string-string tersebut, seperti yang sudah diimplementasikan di file [`ProductController.java`](https://github.com/hyvos07/pengjut/blob/main/src/main/java/id/ac/ui/cs/advprog/eshop/controller/ProductController.java) versi sekarang.
+
+```java
+private static final String SUCCESS = "success";
+private static final String ERROR = "error";
+```
+Dengan begitu, saat kita ingin mengubah isi dari *string* yang dipakai di beberapa tempat tersebut, kita hanya perlu mengubah variabel `SUCCESS` dan `ERROR` saja.
+
+
+<br>
+
+> Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!
+
+Pada versi yang terbaru (di pengerjaan Modul 2 ini), saya merasa bahwa *project* ini sudah mengimplementasikan apa yang biasanya disebut dengan *Continuous Integration and Continuous Deployment* (CI/CD). Pada *project* ini, saya sudah mengimplementasikan Github Workflow yang akan menjalankan *unit tests* yang saya buat di folder `Test`, yang menunjukkan implementasi CI. Selain *test* yang dibuat manual, terdapat pula Scorecard dan Sonarcloud yang membantu dalam project ini untuk menganalisis dan memberi saran pada kode yang baru saja di-*push* ke Github. Ketiga *tools* ini otomatis dijalankan setelah ada *push* baru yang masuk di Github, membuatnya akan berjalan secara terus-menerus.
+
+Selain CI, terdapat pula CD ke PaaS (*Platform as a Service*) yang akan otomatis melakukan *deployment* dari *branch* `main` ke [Koyeb](https://pengjut.koyeb.app/) setelah *test* yang dijalankan di *pull request* berhasil.. Walaupun saya tidak memakai Github Workflow untuk mengotomisasi *deployment* ini, Koyeb sudah terotomisasi sehingga akan melakukan *build* dan *deployment* sendiri secara otomatis jika terdapat perubahan baru yang di-*push* di Github. Menurut saya, sistem ini sudah mengikuti konsep dari *Continuous Deployment* (CD).
+
+Maka dari itu, menurut saya *project* ini sudah menganut konsep dari CI/CD yang sudah saya atur.
+<br>
+
 ## Modul 1
 
 ### Reflection 1
