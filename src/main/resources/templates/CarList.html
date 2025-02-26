@@ -11,9 +11,10 @@
 <body>
 
     <div class="container my-2">
-        <h2>Car' List</h2>
-        <a th:href="@{/car/createCar}" class="btn btn-primary btn-sm mb-3">Create Car</a>
-
+        <div class="d-flex justify-content-between align-items-center my-5">
+            <h2>Car List</h2>
+            <a th:href="@{/car/createCar}" class="btn btn-primary text-white">Create Car</a>
+        </div>
         <table border="1" class="table table-striped table-responsive-md">
             <thead>
                 <tr>
@@ -28,7 +29,7 @@
                     <td th:text="${car.carColor}"></td>
                     <td th:text="${car.carQuantity}"></td>
                     <td>
-                        <a th:href="@{/car/editCar/{id}(id=${car.carId})}" class="btn btn-info btn-sm">Edit</a>
+                        <a th:href="@{/car/editCar/{id}(id=${car.carId})}" class="btn btn-info btn-sm text-white">Edit</a>
                     </td>
                     <td>
                         <form th:action="@{/car/deleteCar}" method="post">
