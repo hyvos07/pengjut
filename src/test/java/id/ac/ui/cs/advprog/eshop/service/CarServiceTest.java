@@ -21,7 +21,7 @@ public class CarServiceTest {
     private CarRepository carRepository;
     
     @InjectMocks
-    private CarServiceImpl carService;
+    private CarService carService;
     
     private Car car1;
     private Car car2;
@@ -83,7 +83,7 @@ public class CarServiceTest {
     
     @Test
     void testDeleteCar() {
-        carService.deleteCarById("car-1");
+        carService.delete("car-1");
         
         verify(carRepository, times(1)).delete("car-1");
     }

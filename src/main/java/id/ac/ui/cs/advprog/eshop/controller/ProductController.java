@@ -1,8 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.controller;
 
-import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.service.CarServiceImpl;
 import id.ac.ui.cs.advprog.eshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +43,7 @@ public class ProductController {
     @GetMapping("/edit/{id}")
     public String editProductPage(@PathVariable String id, Model model, RedirectAttributes ra) {
         try {
-            Product product = service.get(id);
+            Product product = service.findById(id);
             model.addAttribute("product", product);
         } catch (Exception e) {
             ra.addFlashAttribute(ERROR, "Alert: Product with id " + id + "cannot be found.");
@@ -68,11 +66,8 @@ public class ProductController {
                 return "redirect:/product/edit/" + id;
             }
 
-            if (!service.update(product)) {
-                ra.addFlashAttribute(ERROR, "Alert: Product cannot be updated!");
-            } else {
-                ra.addFlashAttribute(SUCCESS, "Alert: Product updated!");
-            }
+            service.update(product.getProductId(), product);
+            ra.addFlashAttribute(SUCCESS, "Alert: Product updated!");
         } catch (Exception e) {
             ra.addFlashAttribute(ERROR, "Alert: Product cannot be updated!");
         }
@@ -83,62 +78,11 @@ public class ProductController {
     @DeleteMapping("/delete/{id}")
     public String deleteProduct(@PathVariable String id, RedirectAttributes ra) {
         try {
-            if (!service.delete(id)) {
-                ra.addFlashAttribute(ERROR, "Alert: Product with id " + id + " cannot be deleted!");
-            } else {
-                ra.addFlashAttribute(SUCCESS, "Alert: Product deleted!");
-            }
+            service.delete(id);
+            ra.addFlashAttribute(SUCCESS, "Alert: Product deleted!");
         } catch (Exception e) {
             ra.addFlashAttribute(ERROR, "Alert: Product with id " + id + " cannot be deleted!");
         }
         return "redirect:/product/list";
-    }
-}
-
-@Controller
-@RequestMapping("/car")
-class CarController extends ProductController {
-    @Autowired
-    private CarServiceImpl carService;
-
-    @GetMapping("/createCar")
-    public String createCarPage(Model model) {
-        Car car = new Car();
-        model.addAttribute("car", car);
-        return "CreateCar";
-    }
-
-    @PostMapping("/createCar")
-    public String createCarPost(@ModelAttribute Car car, Model model) {
-        carService.create(car);
-        return "redirect:listCar";
-    }
-
-    @GetMapping("/listCar")
-    public String carListPage(Model model) {
-        List<Car> allCars = carService.findAll();
-        model.addAttribute("cars", allCars);
-        return "CarList";
-    }
-
-    @GetMapping("/editCar/{carId}")
-    public String editCarPage(@PathVariable String carId, Model model) {
-        Car car = carService.findById(carId);
-        model.addAttribute("car", car);
-        return "EditCar";
-    }
-
-    @PostMapping("/editCar")
-    public String editCarPost(@ModelAttribute Car car, Model model) {
-        System.out.println(car.getCarId());
-        carService.update(car.getCarId(), car);
-
-        return "redirect:listCar";
-    }
-
-    @PostMapping("/deleteCar")
-    public String deleteCar(@RequestParam("carId") String carId) {
-        carService.deleteCarById(carId);
-        return "redirect:listCar";
     }
 }

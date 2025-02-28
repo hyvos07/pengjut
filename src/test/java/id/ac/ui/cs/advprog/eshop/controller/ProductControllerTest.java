@@ -80,14 +80,14 @@ public class ProductControllerTest {
         RedirectAttributes ra = new RedirectAttributesModelMap();
         String id = "123";
         Product product = new Product();
-        when(service.get(id)).thenReturn(product);
+        when(service.findById(id)).thenReturn(product);
 
         String view = controller.editProductPage(id, model, ra);
 
         assertEquals("EditProduct", view);
         assertTrue(model.containsAttribute("product"));
         assertEquals(product, model.getAttribute("product"));
-        verify(service).get(id);
+        verify(service).findById(id);
     }
 
     // [GET] --- /product/edit/{id} --- Product not found (Exception)
@@ -96,7 +96,7 @@ public class ProductControllerTest {
         Model model = new ExtendedModelMap();
         RedirectAttributes ra = new RedirectAttributesModelMap();
         String id = "123";
-        when(service.get(id)).thenThrow(new RuntimeException());
+        when(service.findById(id)).thenThrow(new RuntimeException());
 
         String view = controller.editProductPage(id, model, ra);
 
@@ -118,7 +118,7 @@ public class ProductControllerTest {
         // Check that the controller returns to the edit page with an error message.
         assertEquals("redirect:/product/edit/" + id, view);
         assertEquals("Alert: Product quantity must be greater than 0!", ((RedirectAttributesModelMap) ra).getFlashAttributes().get("error"));
-        verify(service, never()).update(any(Product.class));
+        verify(service, never()).update(any(), any(Product.class));
     }
 
     // [PUT] --- /product/edit/{id} --- Product name is empty
@@ -134,7 +134,7 @@ public class ProductControllerTest {
 
         assertEquals("redirect:/product/edit/" + id, view);
         assertEquals("Alert: Product name cannot be empty!", ((RedirectAttributesModelMap) ra).getFlashAttributes().get("error"));
-        verify(service, never()).update(any(Product.class));
+        verify(service, never()).update(any(), any(Product.class));
     }
 
     // [PUT] --- /product/edit/{id} --- Update fails
@@ -145,13 +145,13 @@ public class ProductControllerTest {
         Product product = new Product();
         product.setProductQuantity(10);
         product.setProductName("ValidName");
-        when(service.update(product)).thenReturn(false);
+        doThrow(new RuntimeException()).when(service).update(id, product);
 
         String view = controller.updateProductPut(product, id, ra);
 
         assertEquals("redirect:/product/list", view);
         assertEquals("Alert: Product cannot be updated!", ((RedirectAttributesModelMap) ra).getFlashAttributes().get("error"));
-        verify(service).update(product);
+        verify(service).update(id, product);
     }
 
     // [PUT] --- /product/edit/{id} --- Success
@@ -162,13 +162,13 @@ public class ProductControllerTest {
         Product product = new Product();
         product.setProductQuantity(10);
         product.setProductName("ValidName");
-        when(service.update(product)).thenReturn(true);
+        doNothing().when(service).update(id, product);
 
         String view = controller.updateProductPut(product, id, ra);
 
         assertEquals("redirect:/product/list", view);
         assertEquals("Alert: Product updated!", ((RedirectAttributesModelMap) ra).getFlashAttributes().get("success"));
-        verify(service).update(product);
+        verify(service).update(id, product);
     }
 
     // [PUT] --- /product/edit/{id} --- Fail (Throws Exception)
@@ -179,13 +179,13 @@ public class ProductControllerTest {
         Product product = new Product();
         product.setProductQuantity(10);
         product.setProductName("ValidName");
-        when(service.update(product)).thenThrow(new RuntimeException());
+        doThrow(new RuntimeException()).when(service).update(id, product);
 
         String view = controller.updateProductPut(product, id, ra);
 
         assertEquals("redirect:/product/list", view);
         assertEquals("Alert: Product cannot be updated!", ((RedirectAttributesModelMap) ra).getFlashAttributes().get("error"));
-        verify(service).update(product);
+        verify(service).update(id, product);
     }
 
     // [DELETE] --- /product/delete/{id} --- Delete fails
@@ -193,7 +193,7 @@ public class ProductControllerTest {
     public void testDeleteProductDeleteFailure() {
         RedirectAttributes ra = new RedirectAttributesModelMap();
         String id = "123";
-        when(service.delete(id)).thenReturn(false);
+        doThrow(new RuntimeException()).when(service).delete(id);
 
         String view = controller.deleteProduct(id, ra);
 
@@ -207,7 +207,7 @@ public class ProductControllerTest {
     public void testDeleteProductDeleteSuccess() {
         RedirectAttributes ra = new RedirectAttributesModelMap();
         String id = "123";
-        when(service.delete(id)).thenReturn(true);
+        doNothing().when(service).delete(id);
 
         String view = controller.deleteProduct(id, ra);
 
@@ -221,7 +221,7 @@ public class ProductControllerTest {
     public void testDeleteProductException() {
         RedirectAttributes ra = new RedirectAttributesModelMap();
         String id = "123";
-        when(service.delete(id)).thenThrow(new RuntimeException());
+        doThrow(new RuntimeException()).when(service).delete(id);
 
         String view = controller.deleteProduct(id, ra);
 

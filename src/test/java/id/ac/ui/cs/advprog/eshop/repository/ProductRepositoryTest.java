@@ -53,7 +53,7 @@ public class ProductRepositoryTest {
         productRepository.create(productA); // Non-matching product
         productRepository.create(productB); // Matching product
 
-        Product product = productRepository.get("correct_id");
+        Product product = productRepository.findById("correct_id");
 
         assertNotNull(product);
         assertEquals("correct_id", product.getProductId());
@@ -65,7 +65,7 @@ public class ProductRepositoryTest {
     @Test
     void testFindNonExistentProduct() {
         assertThrows(NoSuchElementException.class, () -> {
-            productRepository.get("apaajalahgangaruhjuga");
+            productRepository.findById("apaajalahgangaruhjuga");
         });
     }
 
@@ -88,7 +88,7 @@ public class ProductRepositoryTest {
         boolean updateResult = productRepository.update(updatedProduct);
         assertTrue(updateResult);
 
-        Product savedProduct = productRepository.get(product.getProductId());
+        Product savedProduct = productRepository.findById(product.getProductId());
         assertEquals(updatedProduct.getProductName(), savedProduct.getProductName());
         assertEquals(updatedProduct.getProductQuantity(), savedProduct.getProductQuantity());
     }

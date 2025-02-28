@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 public class ProductRepository {
     private List<Product> productData = new ArrayList<>();
 
-    public Product get(String productId) throws NoSuchElementException {
+    public Product findById(String productId) throws NoSuchElementException {
         Iterator<Product> iterator = findAll();
 
         while (iterator.hasNext()) {
@@ -31,7 +31,7 @@ public class ProductRepository {
     }
 
     public boolean update(Product product) throws NoSuchElementException {
-        Product oldProduct = this.get(product.getProductId());
+        Product oldProduct = this.findById(product.getProductId());
         oldProduct.setProductName(product.getProductName());
         oldProduct.setProductQuantity(product.getProductQuantity());
         return true;
