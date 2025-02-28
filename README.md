@@ -12,7 +12,9 @@
 
 ### Reflection
 > Explain what principles you apply to your project!
+
 Saya telah mengimplementasi 5 prinsip dari SOLID Principle yang terdiri dari:
+
 - **S - Single Responsibility Principle**
 
     Pada proyek ini, saya mengimplementasi prinsip Single Responsibility Principle yang mengutamakan 1 fungsi untuk setiap class/file yang ada di dalam proyek ini. Contohnya pada class `CarController`, saya memisahkannya dari file `ProductController.java` agar tidak menambah peran dari file tersebut dan menjaga prinsip 1 fungsi untuk setiap class/file. 
@@ -36,9 +38,11 @@ Saya telah mengimplementasi 5 prinsip dari SOLID Principle yang terdiri dari:
     Pada proyek ini, saya menggunakan class service langsung dengan implementasinya tanpa memisahkan implementasi di suatu class yang lain. Hal ini saya lakukan untuk bisa menjaga prinsip Dependency Inversion Principle (DIP) agar bisa langsung meng-*implement* interface dari `BaseService<T>` secara langsung tanpa perantara interface lagi.
 
 > Explain the advantages of applying SOLID principles to your project with examples.
+
 Penerapan prinsip SOLID pada proyek saya berdampak dari readibility yang proyek saya punya sekarang. Contohnya, pada implementasi prinsip Interface Segregation Principle (ISP), interface `BaseService<T>` saya dapat menjadi acuan developer lain untuk membuat service baru yang akan dipakai nantinya, bahkan untuk saya sendiri. Hal ini akan memudahkan maintainability dari proyek dan kode yang sudah dibuat.
 
 > Explain the disadvantages of not applying SOLID principles to your project with examples.
+
 Saat tidak adanya penerapan SOLID yang benar, beberapa bagian kode bisa saja menjadi tidak logical dan sulit untuk dimengerti, misalnya pada saat `CarController` masih meng-*extend* class controller lainnya, yaitu `ProductController`. `extends` yang sia-sia tersebut akan menimbulkan kebingungan bahkan kesalahpahaman oleh developer yang melanjutkan proyek ini nantinya. Bisa saja developer lain akan berpikir jika sebuah controller yang dibuat pada proyek ini diharuskan untuk meng-*extend* class controller lainnya, yaitu `ProductController`.
 
 <br>
