@@ -43,7 +43,7 @@ public class ProductController {
     @GetMapping("/edit/{id}")
     public String editProductPage(@PathVariable String id, Model model, RedirectAttributes ra) {
         try {
-            Product product = service.get(id);
+            Product product = service.findById(id);
             model.addAttribute("product", product);
         } catch (Exception e) {
             ra.addFlashAttribute(ERROR, "Alert: Product with id " + id + "cannot be found.");
@@ -66,11 +66,8 @@ public class ProductController {
                 return "redirect:/product/edit/" + id;
             }
 
-            if (!service.update(product)) {
-                ra.addFlashAttribute(ERROR, "Alert: Product cannot be updated!");
-            } else {
-                ra.addFlashAttribute(SUCCESS, "Alert: Product updated!");
-            }
+            service.update(product.getProductId(), product);
+            ra.addFlashAttribute(SUCCESS, "Alert: Product updated!");
         } catch (Exception e) {
             ra.addFlashAttribute(ERROR, "Alert: Product cannot be updated!");
         }
@@ -81,11 +78,8 @@ public class ProductController {
     @DeleteMapping("/delete/{id}")
     public String deleteProduct(@PathVariable String id, RedirectAttributes ra) {
         try {
-            if (!service.delete(id)) {
-                ra.addFlashAttribute(ERROR, "Alert: Product with id " + id + " cannot be deleted!");
-            } else {
-                ra.addFlashAttribute(SUCCESS, "Alert: Product deleted!");
-            }
+            service.delete(id);
+            ra.addFlashAttribute(SUCCESS, "Alert: Product deleted!");
         } catch (Exception e) {
             ra.addFlashAttribute(ERROR, "Alert: Product with id " + id + " cannot be deleted!");
         }

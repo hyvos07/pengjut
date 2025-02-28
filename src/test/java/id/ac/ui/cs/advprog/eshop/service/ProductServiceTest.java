@@ -25,9 +25,10 @@ public class ProductServiceTest {
     ProductRepository productRepository;
 
     @InjectMocks
-    private ProductServiceImpl productService;
+    private ProductService productService;
 
     private Product product;
+    private static String MOCKID = "apaajalahgangaruhjuga";
 
     @BeforeEach
     void setUp() {
@@ -102,10 +103,10 @@ public class ProductServiceTest {
      */
     @Test
     void testFindNonExistentProduct() {
-        when(productRepository.get("apaajalahgangaruhjuga")).thenThrow(NoSuchElementException.class);
+        when(productRepository.get(MOCKID)).thenThrow(NoSuchElementException.class);
         
         assertThrows(NoSuchElementException.class, () -> {
-            productService.get("apaajalahgangaruhjuga");
+            productService.findById(MOCKID);
         });
     }
     
@@ -126,12 +127,11 @@ public class ProductServiceTest {
         updatedProduct.setProductName("Updated Product");
         updatedProduct.setProductQuantity(200);
         
-        boolean updateResult = productService.update(updatedProduct);
-        assertTrue(updateResult);
+        productService.update("eb558e9f-1c39-460e-8860-71af6af63bd6", updatedProduct);
         
         when(productRepository.get(product.getProductId())).thenReturn(product);
         
-        Product savedProduct = productService.get(product.getProductId());
+        Product savedProduct = productService.findById(product.getProductId());
         assertEquals(updatedProduct.getProductName(), savedProduct.getProductName());
         assertEquals(updatedProduct.getProductQuantity(), savedProduct.getProductQuantity());
         
@@ -145,7 +145,7 @@ public class ProductServiceTest {
      */
     @Test
     void testEditNonExistentProduct() {
-        when(productRepository.get("apaajalahgangaruhjuga")).thenThrow(NoSuchElementException.class);
+        when(productRepository.get(MOCKID)).thenThrow(NoSuchElementException.class);
         when(productRepository.update(any(Product.class))).thenAnswer(invocation -> {
             Product updatedProduct = invocation.getArgument(0);
             productRepository.get(updatedProduct.getProductId());   // This will throw NoSuchElementException
@@ -153,13 +153,12 @@ public class ProductServiceTest {
         });
 
         Product product = new Product();
-        product.setProductId("apaajalahgangaruhjuga");
+        product.setProductId(MOCKID);
         product.setProductName("Test Product");
         product.setProductQuantity(100);
 
         assertThrows(NoSuchElementException.class, () -> {
-            boolean updateResult = productService.update(product);
-            assertFalse(updateResult);
+            productService.update(MOCKID, product);
         });
     }
 
@@ -170,8 +169,7 @@ public class ProductServiceTest {
     void testDeleteProduct() {
         when(productRepository.delete(product.getProductId())).thenReturn(true);
 
-        boolean deleteResult = productService.delete(product.getProductId());
-        assertTrue(deleteResult);
+        productService.delete(product.getProductId());
         
         when(productRepository.findAll()).thenReturn(Collections.emptyIterator());
 
@@ -183,15 +181,20 @@ public class ProductServiceTest {
 
     /**
      * Test the delete product functionality with non-existent product
-     * (the product is not in the repository, so it should return false because
-     * there is nothing to delete :/)
+     * (the product is not in the repository, so it should not change the list at all :/)
      */
     @Test
     void testDeleteNonExistentProduct() {
-        when(productRepository.delete("apaajalahgangaruhjuga")).thenReturn(product.getProductId().equals("apaajalahgangaruhjuga"));
+        when(productRepository.findAll()).thenReturn(Collections.emptyIterator());
+        List<Product> productListBefore = productService.findAll();
+        assertTrue(productListBefore.isEmpty());
 
-        boolean deleteResult = productService.delete("apaajalahgangaruhjuga");
-        assertFalse(deleteResult);
+        productService.delete(MOCKID);
+        verify(productRepository, times(1)).delete(MOCKID);
+
+        when(productRepository.findAll()).thenReturn(Collections.emptyIterator());
+        List<Product> productListAfter = productService.findAll();
+        assertTrue(productListAfter.isEmpty());
     }
 
     @Test
