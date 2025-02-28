@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,27 +17,23 @@ public class ProductService implements BaseService<Product>{
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductValidator productValidator;
+
     @Override
     public Product findById(String productId) throws NoSuchElementException {
-        return productRepository.get(productId);
+        return productRepository.findById(productId);
     }
 
     @Override
     public Product create(Product product) throws IllegalArgumentException {
-        if (product.getProductName() == null) {
-            throw new IllegalArgumentException("Product name cannot be null");
-        } else if (product.getProductName().isEmpty()) {
-            throw new IllegalArgumentException("Product name cannot be empty");
-        } else if (product.getProductQuantity() < 0) {
-            throw new IllegalArgumentException("Product quantity cannot be negative");
-        }
-        
+        productValidator.validate(product);
         productRepository.create(product);
         return product;
     }
 
     @Override
-    public void update(String id, Product product) throws NoSuchElementException{
+    public void update(String id, Product product) throws NoSuchElementException {
         productRepository.update(product);
     }
 
@@ -51,5 +48,18 @@ public class ProductService implements BaseService<Product>{
         List<Product> allProduct = new ArrayList<>();
         productIterator.forEachRemaining(allProduct::add);
         return allProduct;
+    }
+}
+
+@Component
+class ProductValidator {
+    public void validate(Product product) throws IllegalArgumentException {
+        if (product.getProductName() == null) {
+            throw new IllegalArgumentException("Product name cannot be null");
+        } else if (product.getProductName().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be empty");
+        } else if (product.getProductQuantity() < 0) {
+            throw new IllegalArgumentException("Product quantity cannot be negative");
+        }
     }
 }

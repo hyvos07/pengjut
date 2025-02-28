@@ -103,7 +103,7 @@ public class ProductServiceTest {
      */
     @Test
     void testFindNonExistentProduct() {
-        when(productRepository.get(MOCKID)).thenThrow(NoSuchElementException.class);
+        when(productRepository.findById(MOCKID)).thenThrow(NoSuchElementException.class);
         
         assertThrows(NoSuchElementException.class, () -> {
             productService.findById(MOCKID);
@@ -129,7 +129,7 @@ public class ProductServiceTest {
         
         productService.update("eb558e9f-1c39-460e-8860-71af6af63bd6", updatedProduct);
         
-        when(productRepository.get(product.getProductId())).thenReturn(product);
+        when(productRepository.findById(product.getProductId())).thenReturn(product);
         
         Product savedProduct = productService.findById(product.getProductId());
         assertEquals(updatedProduct.getProductName(), savedProduct.getProductName());
@@ -145,10 +145,10 @@ public class ProductServiceTest {
      */
     @Test
     void testEditNonExistentProduct() {
-        when(productRepository.get(MOCKID)).thenThrow(NoSuchElementException.class);
+        when(productRepository.findById(MOCKID)).thenThrow(NoSuchElementException.class);
         when(productRepository.update(any(Product.class))).thenAnswer(invocation -> {
             Product updatedProduct = invocation.getArgument(0);
-            productRepository.get(updatedProduct.getProductId());   // This will throw NoSuchElementException
+            productRepository.findById(updatedProduct.getProductId());   // This will throw NoSuchElementException
             return false;
         });
 
