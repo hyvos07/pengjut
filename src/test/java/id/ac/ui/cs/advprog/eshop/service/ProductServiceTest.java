@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,6 +24,9 @@ import static org.mockito.Mockito.when;
 public class ProductServiceTest {
     @Mock
     ProductRepository productRepository;
+
+    @Mock
+    private ProductValidator productValidator;
 
     @InjectMocks
     private ProductService productService;
@@ -61,6 +65,8 @@ public class ProductServiceTest {
         product.setProductId("skibidi");
         product.setProductName("");
         product.setProductQuantity(100);
+
+        doThrow(IllegalArgumentException.class).when(productValidator).validate(product);
         
         assertThrows(IllegalArgumentException.class, () -> {
             productService.create(product);
@@ -75,6 +81,8 @@ public class ProductServiceTest {
         product.setProductId("test-id");
         product.setProductName(null); 
         product.setProductQuantity(100);
+
+        doThrow(IllegalArgumentException.class).when(productValidator).validate(product);
         
         assertThrows(IllegalArgumentException.class, () -> {
             productService.create(product);
@@ -89,6 +97,8 @@ public class ProductServiceTest {
         product.setProductId("test-id");
         product.setProductName("Test Product");
         product.setProductQuantity(-1);
+
+        doThrow(IllegalArgumentException.class).when(productValidator).validate(product);
         
         assertThrows(IllegalArgumentException.class, () -> {
             productService.create(product);
