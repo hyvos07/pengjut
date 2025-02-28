@@ -39,7 +39,7 @@ Saya telah mengimplementasi 5 prinsip dari SOLID Principle yang terdiri dari:
 Penerapan prinsip SOLID pada proyek saya berdampak dari readibility yang proyek saya punya sekarang. Contohnya, pada implementasi prinsip Interface Segregation Principle (ISP), interface `BaseService<T>` saya dapat menjadi acuan developer lain untuk membuat service baru yang akan dipakai nantinya, bahkan untuk saya sendiri. Hal ini akan memudahkan maintainability dari proyek dan kode yang sudah dibuat.
 
 > Explain the disadvantages of not applying SOLID principles to your project with examples.
-Saat tidak adanya penerapan SOLID yang benar, beberapa bagian kode bisa saja menjadi tidak logical dan sulit untuk dimengerti, misalnya pada saat `CarController` masih meng-*extend* 
+Saat tidak adanya penerapan SOLID yang benar, beberapa bagian kode bisa saja menjadi tidak logical dan sulit untuk dimengerti, misalnya pada saat `CarController` masih meng-*extend* class controller lainnya, yaitu `ProductController`. `extends` yang sia-sia tersebut akan menimbulkan kebingungan bahkan kesalahpahaman oleh developer yang melanjutkan proyek ini nantinya. Bisa saja developer lain akan berpikir jika sebuah controller yang dibuat pada proyek ini diharuskan untuk meng-*extend* class controller lainnya, yaitu `ProductController`.
 
 <br>
 
