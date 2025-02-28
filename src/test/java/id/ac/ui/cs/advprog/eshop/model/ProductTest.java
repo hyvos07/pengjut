@@ -22,7 +22,6 @@ class ProductTest {
     void testEmptyProduct() {
         Product newProduct = new Product();
 
-        assertNull(newProduct.getProductId());
         assertNull(newProduct.getProductName());
         assertEquals(0, newProduct.getProductQuantity());
     }

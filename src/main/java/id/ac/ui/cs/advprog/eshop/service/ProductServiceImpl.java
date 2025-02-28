@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -30,8 +29,7 @@ public class ProductServiceImpl implements ProductService{
         } else if (product.getProductQuantity() < 0) {
             throw new IllegalArgumentException("Product quantity cannot be negative");
         }
-
-        product.setProductId(UUID.randomUUID().toString());
+        
         productRepository.create(product);
         return product;
     }
