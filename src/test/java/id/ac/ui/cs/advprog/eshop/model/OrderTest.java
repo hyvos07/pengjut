@@ -12,7 +12,7 @@ public class OrderTest {
     private List<Product> products;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         this.products = new ArrayList<>();
         Product product1 = new Product();
         product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -27,58 +27,52 @@ public class OrderTest {
     }
 
     @Test
-    void testCreateOrderEmptyProduct(){
+    void testCreateOrderEmptyProduct() {
         this.products.clear();
 
-        assertThrows(IllegalArgumentException.class, ()->{
-            Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, 1708560000L, "Safira Skibidi");
+        assertThrows(IllegalArgumentException.class, () -> {
+            Order order = new Order(this.products, 1708560000L, "Safira Skibidi");
         });
     }
 
     @Test
-    void testCreateOrderDefaultStatus(){
-        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-            this.products, 1708560000L, "Safira Skibidi");
+    void testCreateOrderDefaultStatus() {
+        Order order = new Order(this.products, 1708560000L, "Safira Skibidi");
 
         assertSame(this.products, order.getProducts());
         assertEquals(2, order.getProducts().size());
         assertEquals("Skibidi Cap Sigma", order.getProducts().get(0).getProductName());
         assertEquals("Skibidi Cap Beta", order.getProducts().get(1).getProductName());
-        
-        assertEquals("13652556-012a-4c07-b546-54eb1396d79b", order.getId());
+
         assertEquals(1708560000L, order.getOrderTime());
         assertEquals("Safira Skibidi", order.getAuthor());
         assertEquals(OrderStatus.WAITING_PAYMENT.getValue(), order.getStatus());
     }
 
     @Test
-    void testOrderCreateOrderSuccessStatus(){
-        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-            this.products, 1708560000L, "Safira Sigma", OrderStatus.SUCCESS.getValue());
+    void testOrderCreateOrderSuccessStatus() {
+        Order order = new Order(this.products, 1708560000L, "Safira Sigma", OrderStatus.SUCCESS.getValue());
         assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
 
     }
 
     @Test
-    void testOrderCreateOrderInvalidStatus(){
-        assertThrows(IllegalArgumentException.class, ()->{
-            Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, 1708560000L, "Safira Skibidi","MEOW");
+    void testOrderCreateOrderInvalidStatus() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Order order = new Order(this.products, 1708560000L, "Safira Skibidi", "MEOW");
         });
     }
 
     @Test
-    void testSetStatusToCancelled(){
-        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-            this.products, 1708560000L,"Safira Skibidi");
+    void testSetStatusToCancelled() {
+        Order order = new Order(this.products, 1708560000L, "Safira Skibidi");
         order.setStatus(OrderStatus.CANCELLED.getValue());
         assertEquals(OrderStatus.CANCELLED.getValue(), order.getStatus());
     }
+
     @Test
-    void testSetStatusToInvalidStatus(){
-        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-            this.products, 1708560000L,"Safira Skibidi");
+    void testSetStatusToInvalidStatus() {
+        Order order = new Order(this.products, 1708560000L, "Safira Skibidi");
         assertThrows(IllegalArgumentException.class, () -> {
             order.setStatus("MEOW");
         });

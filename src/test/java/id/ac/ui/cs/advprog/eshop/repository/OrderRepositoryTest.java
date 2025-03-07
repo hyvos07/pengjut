@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderRepositoryTest {
     @InjectMocks
     OrderRepository orderRepository;
-    
+
     List<Order> orders;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         orderRepository = new OrderRepository();
 
         List<Product> products = new ArrayList<>();
@@ -30,19 +30,16 @@ class OrderRepositoryTest {
         products.add(product1);
 
         orders = new ArrayList<>();
-        Order order1 = new Order("13652556-012a-4c07-b546-54eb1396d79b", products,
-                1708560000L, "Safira Skibidi");
+        Order order1 = new Order(products, 1708560000L, "Safira Skibidi");
         orders.add(order1);
-        Order order2 = new Order("7f9e15bb-4b15-42f4-aebc-c3af385fb078", products,
-                1708570000L, "Safira Skibidi");
+        Order order2 = new Order(products, 1708570000L, "Safira Skibidi");
         orders.add(order2);
-        Order order3 = new Order("e334ef40-9eff-4da8-9487-8ee607ecbf1e", products,
-                1708570000L, "Bambang Sigma");
+        Order order3 = new Order(products, 1708570000L, "Bambang Sigma");
         orders.add(order3);
     }
 
     @Test
-    void testSaveCreate(){
+    void testSaveCreate() {
         Order order = orders.get(1);
         Order result = orderRepository.save(order);
 
@@ -55,7 +52,7 @@ class OrderRepositoryTest {
     }
 
     @Test
-    void testSaveUpdate(){
+    void testSaveUpdate() {
         Order order = orders.get(1);
         orderRepository.save(order);
 
@@ -72,8 +69,8 @@ class OrderRepositoryTest {
     }
 
     @Test
-    void testFindByIdIfIdFound(){
-        for (Order order : orders){
+    void testFindByIdIfIdFound() {
+        for (Order order : orders) {
             orderRepository.save(order);
         }
 
@@ -85,8 +82,8 @@ class OrderRepositoryTest {
     }
 
     @Test
-    void testFindByIdIfIdNotFound(){
-        for (Order order : orders){
+    void testFindByIdIfIdNotFound() {
+        for (Order order : orders) {
             orderRepository.save(order);
         }
         Order findResult = orderRepository.findById("zczc");
@@ -94,8 +91,8 @@ class OrderRepositoryTest {
     }
 
     @Test
-    void testFindAllByAuthorIfAuthorCorrect(){
-        for (Order order : orders){
+    void testFindAllByAuthorIfAuthorCorrect() {
+        for (Order order : orders) {
             orderRepository.save(order);
         }
         List<Order> orderList = orderRepository.findAllByAuthor(orders.get(1).getAuthor());
@@ -103,8 +100,8 @@ class OrderRepositoryTest {
     }
 
     @Test
-    void testFindAllByAuthorIfAllLowerCase(){
-        for (Order order : orders){
+    void testFindAllByAuthorIfAllLowerCase() {
+        for (Order order : orders) {
             orderRepository.save(order);
         }
         List<Order> orderList = orderRepository.findAllByAuthor(

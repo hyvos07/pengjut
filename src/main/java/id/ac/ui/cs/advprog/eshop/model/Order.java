@@ -2,9 +2,8 @@ package id.ac.ui.cs.advprog.eshop.model;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.Arrays;
+import java.util.UUID;
 import java.util.List;
 
 import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
@@ -18,21 +17,30 @@ public class Order {
     String author;
     String status;
 
-    public Order(String id, List<Product> products, Long orderTime, String author) {
+    public Order(String id, List<Product> products, Long orderTime, String author, String status) {
         this.id = id;
+        this.products = products;
+        this.orderTime = orderTime;
+        this.author = author;
+        
+        this.setStatus(status);
+    }
+
+    public Order(List<Product> products, Long orderTime, String author) {
+        this.id = UUID.randomUUID().toString();
         this.orderTime = orderTime;
         this.author = author;
         this.status = OrderStatus.WAITING_PAYMENT.getValue();
-
+        
         if (products.isEmpty()) {
             throw new IllegalArgumentException("Order must have at least one product");
         } else {
             this.products = products;
         }
     }
-
-    public Order(String id, List<Product> products, Long orderTime, String author, String status) {
-        this(id, products, orderTime, author);
+    
+    public Order(List<Product> products, Long orderTime, String author, String status) {
+        this(products, orderTime, author);
         this.setStatus(status);
     }
     
