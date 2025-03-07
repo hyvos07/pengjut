@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,19 +10,39 @@ import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 
 public class PaymentRepository {
+    private List<Payment> payments = new ArrayList<>();
+
     public Payment addPayment(Order order, PaymentMethod method, Map<String, String> paymentData) throws IllegalArgumentException {
-        return null;
+        Payment payment = new Payment(method, paymentData, order);
+        this.payments.add(payment);
+        return payment; 
     }
 
     public Payment setStatus(Payment payment, PaymentStatus status) throws IllegalArgumentException {
-        return null;
+        payment.setStatus(status);
+
+        payment.getOrder().setStatus(
+            status == PaymentStatus.SUCCESS
+                ? "SUCCESS" 
+                : status == PaymentStatus.PENDING
+                    ? "WAITING_PAYMENT" 
+                    : "FAILED"
+        );
+
+        return payment;
     }
 
     public Payment getPayment(String paymentId) {
+        for (Payment payment : payments) {
+            if (payment.getId().equals(paymentId)) {
+                return payment;
+            }
+        }
+        
         return null;
     }
 
     public List<Payment> getAllPayments() {
-        return null;
+        return payments;
     }
 }
