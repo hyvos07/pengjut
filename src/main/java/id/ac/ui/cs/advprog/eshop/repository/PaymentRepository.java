@@ -3,6 +3,7 @@ package id.ac.ui.cs.advprog.eshop.repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
@@ -32,14 +33,14 @@ public class PaymentRepository {
         return payment;
     }
 
-    public Payment getPayment(String paymentId) {
+    public Payment getPayment(String paymentId) throws NoSuchElementException{
         for (Payment payment : payments) {
             if (payment.getId().equals(paymentId)) {
                 return payment;
             }
         }
-        
-        return null;
+
+        throw new NoSuchElementException("Payment not found");
     }
 
     public List<Payment> getAllPayments() {

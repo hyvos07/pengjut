@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -116,7 +117,7 @@ public class PaymentRepositoryTest {
     
     @Test
     void testGetPaymentNotFoundThrowsException() {
-        assertNull(paymentRepository.getPayment("skibidisigma"));
+        assertThrows(NoSuchElementException.class, () -> paymentRepository.getPayment("skibidisigma"));
     }
     
     @Test
