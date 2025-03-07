@@ -5,6 +5,7 @@ import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderRepositoryTest {
+    @InjectMocks
     OrderRepository orderRepository;
+    
     List<Order> orders;
 
     @BeforeEach
