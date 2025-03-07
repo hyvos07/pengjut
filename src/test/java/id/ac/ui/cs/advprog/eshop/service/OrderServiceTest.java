@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class OrderServiceImplTest {
+public class OrderServiceTest {
     @InjectMocks
-    OrderServiceImpl orderService;
+    OrderService orderService;
     @Mock
     OrderRepository orderRepository;
     List<Order> orders;
@@ -32,15 +32,15 @@ public class OrderServiceImplTest {
         Product product1 = new Product();
         product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         product1.setProductQuantity(2);
-        product1.setProductName("Sampo Cap Bambang");
+        product1.setProductName("Skibidi Cap Sigma");
         products.add(product1);
 
         orders = new ArrayList<>();
         Order order1 = new Order("13652556-012a-4c07-b546-54eb1396d79b", products,
-                1708560000L, "Safira Sudarajat");
+                1708560000L, "Safira Skibidi");
         orders.add(order1);
         Order order2 = new Order("7f9e15bb-4b15-42f4-aebc-c3af385fb078", products,
-                1708570000L, "Safira Sudarajat");
+                1708570000L, "Safira Skibidi");
         orders.add(order2);
     }
 
