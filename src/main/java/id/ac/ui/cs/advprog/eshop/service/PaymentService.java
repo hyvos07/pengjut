@@ -17,18 +17,18 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
 
     public Payment addPayment(Order order, PaymentMethod method, Map<String, String> paymentData) throws IllegalArgumentException {
-        return null;
+        return paymentRepository.addPayment(order, method, paymentData);
     }
 
     public Payment setStatus(Payment payment, PaymentStatus status) throws IllegalArgumentException {
-        return null;
+        return paymentRepository.setStatus(payment, status);
     }
 
     public Payment getPayment(String paymentId) throws NoSuchElementException{
-        return null;
+        return paymentRepository.getPayment(paymentId);
     }
 
     public List<Payment> getAllPayments() {
-        return null;
+        return paymentRepository.getAllPayments();
     }
 }
