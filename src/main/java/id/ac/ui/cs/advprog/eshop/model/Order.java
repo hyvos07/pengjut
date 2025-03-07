@@ -7,6 +7,8 @@ import lombok.Setter;
 import java.util.Arrays;
 import java.util.List;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+
 @Builder
 @Getter
 public class Order {
@@ -14,16 +16,13 @@ public class Order {
     List<Product> products;
     Long orderTime;
     String author;
-
     String status;
-
-    private static String[] statusList = {"WAITING_PAYMENT", "CANCELLED", "SUCCESS", "FAILED"};
 
     public Order(String id, List<Product> products, Long orderTime, String author) {
         this.id = id;
         this.orderTime = orderTime;
         this.author = author;
-        this.status = "WAITING_PAYMENT";
+        this.status = OrderStatus.WAITING_PAYMENT.getValue();
 
         if (products.isEmpty()) {
             throw new IllegalArgumentException("Order must have at least one product");
@@ -34,19 +33,14 @@ public class Order {
 
     public Order(String id, List<Product> products, Long orderTime, String author, String status) {
         this(id, products, orderTime, author);
-        
-        if (Arrays.stream(statusList).noneMatch(item -> (item.equals(status)))) {
-            throw new IllegalArgumentException("Invalid status");
-        } else {
-            this.status = status;
-        }
+        this.setStatus(status);
     }
     
     public void setStatus(String status){
-        if (Arrays.stream(statusList).noneMatch(item -> (item.equals(status)))) {
-            throw new IllegalArgumentException("Invalid status");
-        } else {
+        if (OrderStatus.contains(status)) {
             this.status = status;
+        } else {
+            throw new IllegalArgumentException("Invalid status");
         }
     }
 }
