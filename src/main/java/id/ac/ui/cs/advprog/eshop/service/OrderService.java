@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class OrderService {
@@ -13,18 +14,30 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     public Order createOrder(Order order) {
+        if (orderRepository.findById(order.getId()) == null) {
+            orderRepository.save(order);
+            return order;
+        }
         return null;
     }
 
     public Order updateStatus(String orderId, String status) {
-        return null;
+        Order order = orderRepository.findById(orderId);
+        if (order != null) {
+            Order newOrder = new Order(order.getId(), order.getProducts(),
+                    order.getOrderTime(), order.getAuthor(), status);
+            orderRepository.save(newOrder);
+            return newOrder;
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     public List<Order> findAllByAuthor(String author) {
-        return null;
+        return orderRepository.findAllByAuthor(author);
     }
 
     public Order findById(String orderId) {
-        return null;
+        return orderRepository.findById(orderId);
     }
 }
