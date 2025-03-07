@@ -8,6 +8,40 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hyvos07_pengjut&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hyvos07_pengjut)
 
+
+## Modul 4
+
+### Reflection
+> Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests.
+
+Alur TDD dalam modul kali ini membantu saya untuk berpikir secara kebalikan: membuat *unit test* lalu merancang isi dari kode yang akan diimplementasikan. Dengan membuat *unit test* terlebih dahulu, saya bisa memperkirakan celah-celah *error* yang dapat terjadi pada implementasi kode nanti, sehingga pada saat saya melanjutkan proyek saya, saya bisa langsung membuat implementasi dalam bentuk kode yang sudah aman dari celah-celah *error* tersebut. Hal yang saya bisa lakukan selanjutnya dalam melakukan alur development TDD ini mungkin adalah harus lebih sigma skibidi on god.
+
+> You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
+
+*Unit tests* yang telah saya buat sudah mengimplementasikan prinsip-prinsip F.I.R.S.T. yang terdiri dari:
+
+- ***Fast***
+    
+    *Unit test* dan *functional test* telah dipisah agar berjalan lebih cepat.
+
+- ***Independent***
+    
+    Setiap *unit test* yang dibuat tidak memiliki kebergantungan pada *test* yang lain.
+
+- ***Repeatable***
+    
+    Setiap *unit test* dapat dijalankan berulang kali dengan hasil yang konsisten setiap kali dijalankan.
+
+- ***Self-validating***
+    
+    Setiap *unit test* telah menggunakan *assertion* yang dapat dibaca oleh *manusia normal* (*human-readable*).
+
+- ***Timely***
+    
+    *Unit tests* dibuat dengan meng-*cover* semua kasus *happy* dan *unhappy* yang bisa muncul.
+
+<br>
+
 ## Modul 3
 
 ### Reflection
