@@ -9,8 +9,10 @@ import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class PaymentServiceTest {
     @InjectMocks
     private PaymentService paymentService;
@@ -94,6 +97,7 @@ public class PaymentServiceTest {
                 target -> {
                     Payment paymentArg = target.getArgument(0);
                     paymentArg.setStatus(PaymentStatus.SUCCESS);
+                    paymentArg.getOrder().setStatus("SUCCESS");
                     return paymentArg;
                 });
 
@@ -116,6 +120,7 @@ public class PaymentServiceTest {
                 target -> {
                     Payment paymentArg = target.getArgument(0);
                     paymentArg.setStatus(PaymentStatus.PENDING);
+                    paymentArg.getOrder().setStatus("WAITING_PAYMENT");
                     return paymentArg;
                 });
 
@@ -138,6 +143,7 @@ public class PaymentServiceTest {
                 target -> {
                     Payment paymentArg = target.getArgument(0);
                     paymentArg.setStatus(PaymentStatus.REJECTED);
+                    paymentArg.getOrder().setStatus("FAILED");
                     return paymentArg;
                 });
 
